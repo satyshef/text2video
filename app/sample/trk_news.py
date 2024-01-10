@@ -34,7 +34,7 @@ def get_drawtext_time(start, duration, text):
     fontsize = 45
     fontcolor = 'white'
     font = './fonts/Uni Sans Heavy.otf'
-    pos_x = 680
+    pos_x = 670
     pos_y = 1670
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
