@@ -36,7 +36,14 @@ def cut_video(input_file, output_dir, output_file_prefix, duration=10):
             output_file = f"{output_dir}/{output_file_prefix}_{file_name}"
             #output_file = f"'{output_dir}/{output_file_prefix}_{file_name}_{i+1}.mp4'"
             #ffmpeg.input(input_file, ss=start_time, t=duration).output(output_file).run()
-            ffmpeg.input(input_file, ss=start_time, t=duration).output(output_file, **{'b:v': '1100k'}, r=30, c='libx264', an=None, map_metadata=-1).run()
+            #work
+            #ffmpeg.input(input_file, ss=start_time, t=duration).output(output_file, **{'b:v': '1100k'}, r=30, c='libx264', an=None, map_metadata=-1).run()
+            #test
+            #yuv420p10le 720x1280
+            #
+            #vf = 'scale=1080:1920,format=yuv420p'
+            vf = 'scale=720:1280,format=yuv420p'
+            ffmpeg.input(input_file, ss=start_time, t=duration).output(output_file, **{'pix_fmt': 'yuv420p'}, r=30, vf=vf, c='libx264', an=None, map_metadata=-1).run()
 
         # Проверяем, остался ли необработанный фрагмент
         #remaining_duration = total_duration - num_segments * duration

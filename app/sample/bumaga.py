@@ -15,7 +15,6 @@ def get_config():
         "intro_text_2": 'НОВОСТИ',
         "blur_strength": 8,
     }
-
     return conf
 
 def __get_drawtext_introtext_1(start, duration, text):
@@ -34,7 +33,7 @@ def __get_drawtext_introtext_1(start, duration, text):
 def get_drawtext_introtext_1(start, duration, text):
     text = ff.prepare_text(text)
     end = start + duration
-    fontsize = 150
+    fontsize = 90
     fontcolor = 'white'
     font = './fonts/Uni Sans Heavy.otf'
     boxcolor = '#184887@1'
@@ -47,11 +46,11 @@ def get_drawtext_introtext_1(start, duration, text):
 def get_drawtext_introtime(start, duration, text):
     text = ff.prepare_text(text)
     end = start + duration
-    fontsize = 70
+    fontsize = 50
     fontcolor = 'white'
     font = './fonts/Uni Sans Heavy.otf'
     pos_x = '(w-text_w)/2'
-    pos_y = '((h-text_h)/2)+200'
+    pos_y = '((h-text_h)/2)+100'
     
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
@@ -61,12 +60,12 @@ def get_drawtext_introtime(start, duration, text):
 def get_drawtext_logo(start, duration, text):
     text = ff.prepare_text(text)
     end = start + duration
-    fontsize = 65
+    fontsize = 50
     fontcolor = 'white'
     font = './fonts/Uni Sans Heavy.otf'
     boxcolor = '#184887@1'
     pos_x = '(w-text_w)/2'
-    pos_y = '((h-text_h)/2)-700'
+    pos_y = '((h-text_h)/2)-500'
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
@@ -76,11 +75,11 @@ def get_drawtext_logo(start, duration, text):
 def get_drawtext_time(start, duration, text):
     text = ff.prepare_text(text)
     end = start + duration
-    fontsize = 50
+    fontsize = 35
     fontcolor = 'white'
     font = './fonts/Uni Sans Heavy.otf'
-    pos_x = '(w-text_w)/2-290'
-    pos_y = '((h-text_h)/2)+620'
+    pos_x = '(w-text_w)/2-200'
+    pos_y = '((h-text_h)/2)+450'
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
@@ -91,13 +90,13 @@ def get_drawtext_news(start, duration, text):
         return ""
     text = ff.prepare_text(text)
     end = start + duration
-    font = './Cocogoose-Narrow/Cocogoose-Narrow-Regular-trial.ttf'
-    fontsize = 54
+    font = './fonts/handil_pro/HandilPro-Medium.otf'
+    fontsize = 36
     fontcolor = 'black'
     pos_x = '(w-text_w)/2'
     pos_y = '((h-text_h)/2)'
-    boxcolor = 'white@0.8'
-    #boxcolor = '202020@0.8'
+    boxcolor = 'white@0.6'
+    #boxcolor = '#FFCC99@0.6'
     enable = f"between(t,{start},{end})"
     alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-{start})/2,if(lt(t,2),1,if(lt(t,{start}0),(0-(t-2))/0,0))))'"
     drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}:enable='{enable}':alpha={alpha}"
@@ -111,7 +110,6 @@ def create_base(pieces_dir, output_video, blur_strength, audio_file, duration):
         print("Error: empty pieces list")
         exit()
     
-    #cut_and_concat_videos(files, output_video)
     ff.concatenate_videos(files, output_video, duration)
     ff.blur_video(output_video, output_video, blur_strength)
     ff.overlay_audio(output_video, audio_file, output_video)
@@ -156,8 +154,10 @@ def run(news):
     if len(draws) == 0:
         return '', 'Empty news list'
     clip_duration = conf['intro_duration'] + (conf['news_duration'] * len(draws))
+    
     create_base(conf['pieces_dir'], output_file, conf['blur_strength'], conf['audio_file'], clip_duration)
-
+    print("OK")
+    #return "test", None
     #clip_duration = conf['news_duration'] * len(draws)
     dt_introtext1 = get_drawtext_introtext_1(0, conf['intro_duration'], conf['intro_text_1'])
     draws.append(dt_introtext1)
