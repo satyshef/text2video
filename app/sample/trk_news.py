@@ -31,11 +31,11 @@ def get_drawtext_introtime(start, duration, text):
 def get_drawtext_time(start, duration, text):
     text = ff.prepare_text(text)
     end = start + duration
-    fontsize = 40
+    fontsize = 45
     fontcolor = 'white'
     font = './fonts/Uni Sans Heavy.otf'
     pos_x = 680
-    pos_y = 1550
+    pos_y = 1670
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
@@ -47,12 +47,14 @@ def get_drawtext_news(start, duration, text):
     text = ff.prepare_text(text)
     end = start + duration
     font = './fonts/Uni Sans Heavy.otf'
-    fontsize = 60
+    fontsize = 50
     fontcolor = 'white'
+    pos_x = '(w-text_w)/2'
+    pos_y = '((h-text_h)/2)+70'
     boxcolor = 'black@0.2'
     enable = f"between(t,{start},{end})"
     alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-{start})/2,if(lt(t,2),1,if(lt(t,{start}0),(0-(t-2))/0,0))))'"
-    drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x=(w-text_w)/2:y=((h-text_h)/2)-20:enable='{enable}':alpha={alpha}"
+    drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}:enable='{enable}':alpha={alpha}"
     return drawtext
 
 
