@@ -3,18 +3,18 @@ import lib.ff as ff
 
 def get_config():
     conf = {
-        "pieces_dir": "./source/pieces_pepper_news",
-        "audio_file": "./source/music/track_1.mp3",
+        "pieces_dir": "./source/pieces_masa_live",
+        "audio_file": "./source/music/track_3.mp3",
         "output_dir": "./out/",
         "intro_duration": 2,
         "promo": "Больше новостей\nв нашем Телеграм\n\nСсылка в профиле",
-        "promo_duration": 3,
-        "news_duration": 7,
+        "promo_duration": 0,
+        "news_duration": 8,
         "max_str_length": 25,
-        "logo_text": 'перец',
-        "intro_text_1": '\        ОСТРО',
-        "intro_text_2": '\ НОВОСТИ           |',
-        "blur_strength": 10,
+        "logo_text": 'hot news',
+        "intro_text_1": '\  NEWS           |',
+        "intro_text_2": '\           HOT',
+        "blur_strength": 8,
     }
 
     return conf
@@ -40,8 +40,9 @@ def get_drawtext_intro_1(start, duration, text):
     fontcolor = 'white'
     font = './fonts/Geist-SemiBold.otf'
     boxcolor = 'red@0.9'
-    pos_x = 0
-    pos_y = 238
+
+    pos_x = 160
+    pos_y = 660
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
@@ -50,11 +51,12 @@ def get_drawtext_intro_2(start, duration, text):
     text = ff.prepare_text(text)
     end = start + duration
     fontsize = 100
-    fontcolor = 'red'
+    fontcolor = '#B9201B'
     font = './fonts/Geist-SemiBold.otf'
     boxcolor = 'white@0.9'
-    pos_x = 100
-    pos_y = 360
+    
+    pos_x = 0
+    pos_y = 538
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
@@ -66,7 +68,7 @@ def get_drawtext_introtime(start, duration, text):
     fontcolor = 'white'
     font = './fonts/Geist-SemiBold.otf'
     pos_x = '(w-text_w)/2'
-    pos_y = '(h-text_h)/2'
+    pos_y = '(h-text_h)/2-400'
     
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
@@ -95,7 +97,7 @@ def get_drawtext_time(start, duration, text):
     fontcolor = 'white'
     font = './fonts/Geist-SemiBold.otf'
     pos_x = '(w-text_w)/2'
-    pos_y = 150
+    pos_y = 170
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
@@ -106,12 +108,14 @@ def get_drawtext_news(start, duration, text):
         return ""
     text = ff.prepare_text(text)
     end = start + duration
+    pos_x = '(w-text_w)/2'
+    pos_y = '((h-text_h)/2)+20'
     fontsize = 38
     fontcolor = 'white'
-    boxcolor = 'red@0.7'
+    boxcolor = '#B9201B@0.7'
     enable = f"between(t,{start},{end})"
     alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-{start})/2,if(lt(t,2),1,if(lt(t,{start}0),(0-(t-2))/0,0))))'"
-    drawtext = f"text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x=(w-text_w)/2:y=((h-text_h)/2)-20:enable='{enable}':alpha={alpha}"
+    drawtext = f"text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}:enable='{enable}':alpha={alpha}"
     return drawtext
 
 
