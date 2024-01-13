@@ -4,7 +4,7 @@ import lib.ff as ff
 def get_config():
     conf = {
         "pieces_dir": "./source/pieces_masa_live",
-        "audio_file": "./source/music/track_3.mp3",
+        "audio_file": "./source/music/summer.mp3",
         "output_dir": "./out/",
         "intro_duration": 2,
         "promo": "Больше новостей\nв нашем Телеграм\n\nСсылка в профиле",
