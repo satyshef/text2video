@@ -12,7 +12,7 @@ def get_config():
         "news_duration": 8,
         "max_str_length": 25,
         "logo_text": 'лента дня',
-        "intro_text_1": '\         ЛЕНТА',
+        "intro_text_1": '\        ЛЕНТА',
         "intro_text_2": '\  ДНЯ               |',
         "blur_strength": 8,
     }
@@ -24,7 +24,7 @@ def get_drawtext_logo(start, duration, text):
     end = start + duration
     fontsize = 35
     fontcolor = 'white'
-    font = './fonts/Geist-UltraBlack.otf'
+    font = './fonts/NeverMindCompact/NeverMindCompact-Extrabold.ttf'
     boxcolor = 'white@0.5'
     pos_x = '(w-text_w)/2'
     pos_y = '(h-100)'
@@ -38,7 +38,7 @@ def get_drawtext_intro_1(start, duration, text):
     end = start + duration
     fontsize = 100
     fontcolor = 'black'
-    font = './fonts/Geist-SemiBold.otf'
+    font = './fonts/NeverMindCompact/NeverMindCompact-Extrabold.ttf'
     boxcolor = 'white@0.9'
     pos_x = 0
     pos_y = 538
@@ -52,7 +52,7 @@ def get_drawtext_intro_2(start, duration, text):
     end = start + duration
     fontsize = 100
     fontcolor = 'white'
-    font = './fonts/Geist-SemiBold.otf'
+    font = './fonts/NeverMindCompact/NeverMindCompact-Extrabold.ttf'
     boxcolor = '#1A3D9F@0.9'
 
     pos_x = 160
@@ -66,7 +66,7 @@ def get_drawtext_introtime(start, duration, text):
     end = start + duration
     fontsize = 60
     fontcolor = 'white'
-    font = './fonts/Geist-SemiBold.otf'
+    font = './fonts/NeverMindCompact/NeverMindCompact-Medium.ttf'
     pos_x = '(w-text_w)/2'
     pos_y = '(h-text_h)/2-400'
     
@@ -81,7 +81,7 @@ def get_drawtext_promo(start, duration, text):
     end = start + duration
     fontsize = 40
     fontcolor = 'white'
-    font = './fonts/Geist-SemiBold.otf'
+    font = './fonts/NeverMindCompact/Geist-SemiBold.otf'
     boxcolor = 'red@0.7'
     pos_x = '(w-text_w)/2'
     pos_y = '(h-text_h)/2'
@@ -95,7 +95,7 @@ def get_drawtext_time(start, duration, text):
     end = start + duration
     fontsize = 30
     fontcolor = 'white'
-    font = './fonts/Geist-SemiBold.otf'
+    font = './fonts/NeverMindCompact/NeverMindCompact-DemiBold.ttf'
     pos_x = '(w-text_w)/2'
     pos_y = 170
     enable = f"between(t,{start},{end})"
@@ -112,10 +112,11 @@ def get_drawtext_news(start, duration, text):
     pos_y = '((h-text_h)/2)+20'
     fontsize = 38
     fontcolor = 'white'
+    font = './fonts/NeverMindCompact/NeverMindCompact-Regular.ttf'
     boxcolor = '#1A3D9F@0.7'
     enable = f"between(t,{start},{end})"
     alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-{start})/2,if(lt(t,2),1,if(lt(t,{start}0),(0-(t-2))/0,0))))'"
-    drawtext = f"text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}:enable='{enable}':alpha={alpha}"
+    drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}:enable='{enable}':alpha={alpha}"
     return drawtext
 
 
