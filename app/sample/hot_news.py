@@ -9,8 +9,6 @@ def get_config():
         "audio_file": "./source/music/track_3.mp3",
         "output_dir": "./out/",
         "intro_duration": 2,
-        "promo": "Больше новостей\nв нашем Телеграм\n\nСсылка в профиле",
-        "promo_duration": 0,
         "news_duration": 8,
         "max_str_length": 25,
         "logo_text": 'hot news',
@@ -76,21 +74,6 @@ def get_drawtext_introtime(start, duration, text):
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
 
-def get_drawtext_promo(start, duration, text):
-    if duration == 0:
-        return None
-    text = ff.prepare_text(text)
-    end = start + duration
-    fontsize = 40
-    fontcolor = 'white'
-    font = './fonts/Geist-SemiBold.otf'
-    boxcolor = 'red@0.7'
-    pos_x = '(w-text_w)/2'
-    pos_y = '(h-text_h)/2'
-    
-    enable = f"between(t,{start},{end})"
-    drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}:enable='{enable}'"
-    return drawtext
 
 def get_drawtext_time(start, duration, text):
     text = ff.prepare_text(text)
@@ -175,11 +158,9 @@ def run(news):
     draws.append(dt_intro2)
     dt_introtime = get_drawtext_introtime(0, intro_duration, news_time)
     draws.append(dt_introtime)
-    dt_promo = get_drawtext_promo(intro_duration, promo_duration, conf['promo'])
-    draws.append(dt_promo)
     dt_logo = get_drawtext_logo(0, clip_duration, conf['logo_text'])
     draws.append(dt_logo)
-    dt_date = get_drawtext_time(pre_duration, clip_duration, news_time)
+    dt_date = get_drawtext_time(intro_duration, clip_duration, news_time)
     draws.append(dt_date)
     #run(output_file, output_file, draws, clip_duration)
     #ff.remove_metadata(result_path, result_path)

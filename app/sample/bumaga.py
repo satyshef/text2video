@@ -155,7 +155,6 @@ def run(news):
 
 
     create_base(conf['pieces_dir'], output_file, conf['blur_strength'], conf['audio_file'], clip_duration)
-    print("OK")
     #return "test", None
     #clip_duration = conf['news_duration'] * len(draws)
     dt_introtext1 = get_drawtext_introtext_1(0, conf['intro_duration'], conf['intro_text_1'])
