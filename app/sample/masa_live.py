@@ -2,6 +2,8 @@
 import lib.news as News
 import lib.ff as ff
 
+DEFAULT_NEWS_DURATION = 6
+
 def get_config():
     conf = {
         "pieces_dir": "./source/pieces_masa_live",
@@ -133,29 +135,36 @@ def run(news):
     news_time = News.get_news_time()
     file_name = News.generate_filename(news['sample'], 'mp4')
     output_file = conf['output_dir'] + file_name
-    #return output_file, None
-    #output_file = 'out/base (копия).mp4'
-    pos = conf['intro_duration']
+    intro_duration = conf['intro_duration']
+    news_list = news['data']
+    
     # создаем размытую основу из кусков видео и наложенной музыкой
     draws = []
-    news_list = news['data']
-    #news_list = News.load_news()
-    for n in news_list:
-        # нарезаем строки
-        text_news = News.split_text(n, conf['max_str_length'])
-        if text_news == "":
+    clip_duration = intro_duration
+    
+    for line in news_list:
+        news_duration, text = News.parse_line(line)
+        if news_duration == 0:
+            if 'news_duration' in conf:
+                news_duration = conf['news_duration']
+            else:
+                news_duration = DEFAULT_NEWS_DURATION
+            
+        # нарезаем текст на строки
+        text = News.split_text(text, conf['max_str_length'])
+        if text == "":
             continue
+
         # получаем элемент drawtext
-        dt_news = get_drawtext_news(pos, conf['news_duration'], text_news)
+        dt_news = get_drawtext_news(clip_duration, news_duration, text)
         if dt_news == "":
             continue
         draws.append(dt_news)
-        pos += conf['news_duration']
+        clip_duration += news_duration
 
-    #return "err"
     if len(draws) == 0:
         return '', 'Empty news list'
-    clip_duration = conf['intro_duration'] + (conf['news_duration'] * len(draws))
+    
     create_base(conf['pieces_dir'], output_file, conf['blur_strength'], conf['audio_file'], clip_duration)
 
     #clip_duration = conf['news_duration'] * len(draws)

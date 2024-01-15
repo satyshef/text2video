@@ -120,11 +120,9 @@ def run(news):
     intro_duration = conf['intro_duration']
     news_list = news['data']
     
-    
     # создаем размытую основу из кусков видео и наложенной музыкой
     draws = []
     clip_duration = intro_duration
-    
     
     for line in news_list:
         news_duration, text = News.parse_line(line)
