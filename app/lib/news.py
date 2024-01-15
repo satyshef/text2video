@@ -1,7 +1,9 @@
+import re
 from datetime import datetime, timedelta
 
 
 TIMEZONE = 3
+
 
 def load_news():
     file_path = 'source/news.txt'
@@ -76,8 +78,27 @@ def split_text(text, max_length=25, max_string=400):
     return '\n'.join(result)
 
 
+
+# разбераем, если она в формате t5:text то 5 это длительность показа новости
+def parse_line(text):
+    match = re.search(r't(\d+):(.*?)$', text)
+    if match:
+        number = int(match.group(1))
+        text_after_colon = match.group(2)
+        return number, text_after_colon
+    
+    return 0, text
+
+
 def generate_filename(base, ext):
     current_datetime = get_current_time(TIMEZONE)
     result = base + '_' + current_datetime.strftime("%y%m%d%H%M%S") + "." + ext
     return result
     
+
+def is_number(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
