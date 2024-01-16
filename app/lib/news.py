@@ -1,4 +1,6 @@
 import re
+import os
+import random
 from datetime import datetime, timedelta
 
 
@@ -102,3 +104,21 @@ def is_number(s):
         return True
     except ValueError:
         return False
+    
+
+def get_random_file_or_directory(path):
+    if os.path.isfile(path):
+        # Если путь указывает на существующий файл, возвращаем этот адрес
+        return path
+    elif os.path.isdir(path):
+        # Если путь указывает на директорию, получаем список файлов в ней
+        files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+        
+        if not files:
+            return None  # Если в директории нет файлов, возвращаем None
+
+        # Выбираем случайный файл из списка
+        random_file = random.choice(files)
+        return os.path.join(path, random_file)
+    else:
+        return None  # Если путь не указывает на существующий файл или директорию, возвращаем None
