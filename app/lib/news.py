@@ -27,7 +27,7 @@ def get_current_time(timezone):
     current_datetime = utc_now + target_offset
     return current_datetime
 
-def get_news_time():
+def get_news_time(format=None):
     # Примените разницу к текущей дате и времени
     current_datetime = get_current_time(TIMEZONE)
     # Вычислить разницу в минутах до следующего часа
@@ -41,7 +41,10 @@ def get_news_time():
         # Если уже конец часа, просто обнулить минуты
         rounded_datetime = current_datetime.replace(minute=0, second=0, microsecond=0)
 
-    return rounded_datetime.strftime("%d.%m.%y %H:%M")
+    if format == 'usa':
+        return rounded_datetime.strftime("%m/%d/%y %I:%M %p")
+    else:
+        return rounded_datetime.strftime("%d.%m.%y %H:%M")
 
 # Нарезаем строку на подстроки. max_string - максимальная длинна входной строки
 def split_text(text, max_length=25, max_string=400):
