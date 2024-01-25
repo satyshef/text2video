@@ -6,83 +6,105 @@ DEFAULT_NEWS_DURATION = 6
 
 def get_config():
     conf = {
-        "pieces_dir": "./source/pieces_masa_live",
-        "audio_file": "./source/music/collection1",
+        "pieces_dir": "./source/base_news7/",
+        "audio_file": "./source/music/collection1/funkyelement.mp3",
         "output_dir": "./out/",
         "news_duration": 7,
         "intro_duration": 2,
-        "max_str_length": 25,
-        "logo_text": '\ Live          |',
+        "intro_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
+        "logo_text": '\ 7news          |',
         "intro_text": 'НОВОСТИ',
-        "blur_strength": 8,
+        "basic_font": "./fonts/cruinn/Cruinn Black.ttf",
+        "max_str_length": 25,
+        "blur_strength": 0,
     }
 
     return conf
 
-def get_drawtext_introtext(start, duration, text):
+
+def get_drawtext_intrologo(start, duration, font):
+    text = '7'
+    text = ff.prepare_text(text)
+    end = start + duration
+    fontsize = 200
+    fontcolor = 'white'
+    #font = './fonts/Geist-SemiBold.otf'
+    #boxcolor = '#0080FF@0.9'
+    boxcolor = '#CC0000@0.9'
+    pos_x = '(w-text_w)/2'
+    pos_y = '((h-text_h)/2)-250'
+    enable = f"between(t,{start},{end})"
+    drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}:enable='{enable}'"
+    return drawtext
+
+
+def get_drawtext_introtext(start, duration, text, font):
     text = ff.prepare_text(text)
     end = start + duration
     fontsize = 120
     fontcolor = 'white'
-    font = './fonts/Geist-SemiBold.otf'
+    #font = './fonts/Geist-SemiBold.otf'
     boxcolor = 'white@0.9'
     pos_x = '(w-text_w)/2'
-    pos_y = '((h-text_h)/2)-120'
+    pos_y = '((h-text_h)/2)-60'
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=0:boxcolor={boxcolor}:boxborderw=20:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
 
-def get_drawtext_introtime(start, duration, text):
+def get_drawtext_introtime(start, duration, text, font):
     text = ff.prepare_text(text)
     end = start + duration
     fontsize = 60
     fontcolor = 'white'
-    font = './fonts/Geist-SemiBold.otf'
+    #font = './fonts/Geist-SemiBold.otf'
     pos_x = '(w-text_w)/2'
-    pos_y = '((h-text_h)/2)-30'
+    pos_y = '((h-text_h)/2)+40'
     
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
 
 
-def get_drawtext_logo(start, duration, text):
+def get_drawtext_logo(start, duration, text, font):
     text = ff.prepare_text(text)
     end = start + duration
     fontsize = 35
     fontcolor = 'white'
-    font = './fonts/Geist-SemiBold.otf'
-    boxcolor = 'red@0.9'
+    #font = './fonts/Geist-SemiBold.otf'
+    #boxcolor = '#0080FF@0.9'
+    boxcolor = '#CC0000@0.9'
     pos_x = '(w-text_w)+10'
-    pos_y = 200
+    pos_y = 150
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
 
 
 
-def get_drawtext_time(start, duration, text):
+def get_drawtext_time(start, duration, text, font):
     text = ff.prepare_text(text)
     end = start + duration
     fontsize = 35
     fontcolor = 'white'
-    font = './fonts/Geist-SemiBold.otf'
+    #font = './fonts/Geist-SemiBold.otf'
     pos_x = 30
-    pos_y = 200
+    pos_y = 150
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
 
-def get_drawtext_news(start, duration, text):
+def get_drawtext_news(start, duration, text, font):
     text = str(text)
     if str(text) == "":
         return ""
     text = ff.prepare_text(text)
     end = start + duration
-    font = '' 
-    fontsize = 35
+    #font = '' 
+    fontsize = 38
     fontcolor = 'white'
-    boxcolor = '#143D74@0.8'
+    #boxcolor = '#606060@0.8'
+    #boxcolor = 'black@0.8'
+    boxcolor = '#0080FF@0.7'
     pos_x = '(w-text_w)/2'
     pos_y = '((h-text_h)/2)+70'
     enable = f"between(t,{start},{end})"
@@ -130,7 +152,7 @@ def run(news):
             continue
 
         # получаем элемент drawtext
-        dt_news = get_drawtext_news(clip_duration, news_duration, text)
+        dt_news = get_drawtext_news(clip_duration, news_duration, text, conf['basic_font'])
         if dt_news == "":
             continue
         draws.append(dt_news)
@@ -143,13 +165,15 @@ def run(news):
     create_base(conf['pieces_dir'], output_file, conf['blur_strength'], audio_file, clip_duration)
 
     #clip_duration = conf['news_duration'] * len(draws)
-    dt_introtext2 = get_drawtext_introtext(0, conf['intro_duration'], conf['intro_text'])
-    draws.append(dt_introtext2)
-    dt_introtime = get_drawtext_introtime(0, conf['intro_duration'], news_time)
+    dt_intrologo = get_drawtext_intrologo(0, conf['intro_duration'], conf['intro_font'])
+    draws.append(dt_intrologo)
+    dt_introtext = get_drawtext_introtext(0, conf['intro_duration'], conf['intro_text'], conf['intro_font'])
+    draws.append(dt_introtext)
+    dt_introtime = get_drawtext_introtime(0, conf['intro_duration'], news_time, conf['intro_font'])
     draws.append(dt_introtime)
-    dt_logo = get_drawtext_logo(conf['intro_duration'], clip_duration, conf['logo_text'])
+    dt_logo = get_drawtext_logo(conf['intro_duration'], clip_duration, conf['logo_text'], conf['intro_font'])
     draws.append(dt_logo)
-    dt_date = get_drawtext_time(conf['intro_duration'], clip_duration, news_time)
+    dt_date = get_drawtext_time(conf['intro_duration'], clip_duration, news_time, conf['intro_font'])
     draws.append(dt_date)
     #run(output_file, output_file, draws, clip_duration)
     #ff.remove_metadata(result_path, result_path)
