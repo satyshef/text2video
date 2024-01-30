@@ -6,8 +6,8 @@ DEFAULT_NEWS_DURATION = 6
 
 def get_config():
     conf = {
-        "pieces_dir": "./source/pieces_bumaga",
-        "audio_file": "./source/music/collection2/Drop the Tapes - TrackTribe.mp3",
+        "pieces_dir": "./source/pieces_masa_live",
+        "audio_file": "./source/music/track_4.mp3",
         "output_dir": "./out/",
         "news_duration": 7,
         "intro_duration": 0,
@@ -15,7 +15,7 @@ def get_config():
         "logo_text": '\       МАСА Live',
         "intro_text_1": 'МАСА',
         "intro_text_2": 'НОВОСТИ',
-        "blur_strength": 0,
+        "blur_strength": 8,
     }
 
     return conf
@@ -106,16 +106,9 @@ def get_drawtext_news(start, duration, text):
     pos_x = '(w-text_w)/2'
     pos_y = '((h-text_h)/2)+30'
     enable = f"between(t,{start},{end})"
-    # плавное появление
-    #alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-{start})/2,if(lt(t,2),1,if(lt(t,{start}0),(0-(t-2))/0,0))))'"
-    #alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-0)/0,if(lt(t,{end}-2),1,if(lt(t,{end}),(2-(t-{end}-2))/2,0))))'"
-    # плавное затухание
-    delta = 1
-    alpha = f"'if(lt(t,{start}),0,if(lt(t,0),(t-0)/0,if(lt(t,({end}-{delta})),1,if(lt(t,{end}),(2-(t-({end}-{delta})))/2,0))))'"
+    alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-{start})/2,if(lt(t,2),1,if(lt(t,{start}0),(0-(t-2))/0,0))))'"
     #drawtext = f"text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x=(w-text_w)/2:y=((h-text_h)/2)-20:enable='{enable}':alpha={alpha}"
     drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}:enable='{enable}':alpha={alpha}"
-    #print(drawtext)
-    #exit(0)
     return drawtext
 
 
