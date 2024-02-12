@@ -7,8 +7,7 @@ from datetime import datetime, timedelta
 TIMEZONE = 3
 
 
-def load_news():
-    file_path = 'source/news.txt'
+def load_news(file_path):
     # Открыть файл для чтения
     with open(file_path, 'r', encoding='utf-8') as file:
         # Прочитать строки из файла и сохранить их в список

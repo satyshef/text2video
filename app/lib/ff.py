@@ -149,6 +149,9 @@ def overlay_audio(input_video, input_audio, output_file):
     overlay_audio("input_video.mp4", "input_audio.mp3", "output_video.mp4")
     """
     # Если заменяем файл
+    if input_video == '':
+        return
+    
     if input_video == output_file:
         #output_file_path = "tmp.mp4"
        output_file_path = get_temp_filename(output_file)
@@ -172,6 +175,14 @@ def overlay_audio(input_video, input_audio, output_file):
         print(f"Произошла ошибка при наложении аудио на видео: {e.stderr}")
 
 
+def get_video_duration(file):
+    try:
+        # Определение длительности видео
+        probe = ffmpeg.probe(file)
+        return float(probe['format']['duration'])
+    except ffmpeg.Error as e:
+        print(f"Произошла ошибка при получении длительности видео: {e.stderr}")
+        return 0
 
 def blur_video(input_file, output_file, blur_strength=5):
     """
@@ -185,6 +196,8 @@ def blur_video(input_file, output_file, blur_strength=5):
     Пример:
     blur_video("input_video.mp4", "output_blurred.mp4", blur_strength=10)
     """
+    if blur_strength == 0:
+        return
     # Если заменяем файл
     if input_file == output_file:
         #output_file_path = "tmp.mp4"
