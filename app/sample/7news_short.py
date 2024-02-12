@@ -44,7 +44,7 @@ def get_drawtext_time(start, duration, text, font):
     fontsize = 40
     fontcolor = 'black@0.8'
     #font = './fonts/Geist-SemiBold.otf'
-    pos_x = 30
+    pos_x = 50
     pos_y = 100
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
