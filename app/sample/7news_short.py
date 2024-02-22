@@ -6,16 +6,16 @@ DEFAULT_NEWS_DURATION = 6
 
 def get_config():
     conf = {
-        "base_file": "./source/bases/7news_short3.mp4",
+        "base_file": "./source/base_news7/7news_base4.mp4",
         #"audio_file": "./source/music/collection1/funkyelement.mp3",
         "audio_file": '',
         "output_dir": "./out/",
         #"clip_duration": 7,
         "logo_text": '\ 7news          |',
         "logo_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
-        "basic_font": "./fonts/cruinn/Cruinn Black.ttf",
+        "basic_font": "./fonts/azoft-sans/Azoft Sans.otf",
         "max_str_length": 35,
-        "max_text_length": 1000,
+        "max_text_length": 1200,
         "blur_strength": 0,
     }
 
@@ -31,7 +31,7 @@ def get_drawtext_logo(start, duration, text, font):
     #boxcolor = '#0080FF@0.9'
     boxcolor = '#CC0000@0.9'
     pos_x = '(w-text_w)+10'
-    pos_y = 100
+    pos_y = '(h-text_h)-50'
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
@@ -42,10 +42,10 @@ def get_drawtext_time(start, duration, text, font):
     text = ff.prepare_text(text)
     end = start + duration
     fontsize = 40
-    fontcolor = 'black@0.8'
+    fontcolor = 'white@0.9'
     #font = './fonts/Geist-SemiBold.otf'
-    pos_x = 50
-    pos_y = 100
+    pos_x = 70
+    pos_y = '(h-text_h)-50'
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
@@ -57,13 +57,13 @@ def get_drawtext_news(start, duration, text, font):
     text = ff.prepare_text(text)
     end = start + duration
     #font = '' 
-    fontsize = 42
+    fontsize = 38
     fontcolor = 'white'
     #boxcolor = '#404040@0.9'
-    boxcolor = '004C99@0.9'
+    boxcolor = '004C99'
     #boxcolor = '#0080FF@0.9'
     pos_x = '(w-text_w)/2'
-    pos_y = '((h-text_h)/2)+70'
+    pos_y = '((h-text_h)/2)-50'
     enable = f"between(t,{start},{end})"
     #alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-{start})/2,if(lt(t,2),1,if(lt(t,{start}0),(0-(t-2))/0,0))))'"
     #drawtext = f"text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x=(w-text_w)/2:y=((h-text_h)/2)-20:enable='{enable}':alpha={alpha}"
@@ -81,11 +81,12 @@ def run(news):
     if len(news_list) == 0:
         return None, "Empty news list"
     draws = []
-    #drawtext = news_list[0]
-    drawtext = "Главное на данный момент:"
+    drawtext = ''
+    #drawtext = '- ' + news_list[0]
+    #drawtext = "Главное на данный момент:"
 
     # Собираем текст
-    for line in news_list[1:]:
+    for line in news_list:
         text = News.split_text(line, conf['max_str_length'])
         if text == "":
             continue
