@@ -91,10 +91,9 @@ def run(news):
 
     # Собираем текст
     for line in news_list:
-        text = News.split_text(line, conf['max_str_length'])
+        text = News.split_text(line, conf['max_str_length'], conf['max_text_length'])
         if text == "":
             continue
-        
         temptext = drawtext + '\n\n' + text
         if len(temptext) > conf['max_text_length']:
             break
