@@ -5,7 +5,7 @@ import ffmpeg
 import lib.helper as helper
 
 
-def cut_video(input_file, output_dir, output_file_prefix, duration=10):
+def cut_video(input_file, output_dir, output_file_prefix, duration=10, vf = 'scale=720:1280,format=yuv420p'):
     """
     Разрезает видеофайл на кусочки заданной длительности.
 
@@ -42,7 +42,6 @@ def cut_video(input_file, output_dir, output_file_prefix, duration=10):
             #yuv420p10le 720x1280
             #
             #vf = 'scale=1080:1920,format=yuv420p'
-            vf = 'scale=720:1280,format=yuv420p'
             ffmpeg.input(input_file, ss=start_time, t=duration).output(output_file, **{'pix_fmt': 'yuv420p'}, r=30, vf=vf, c='libx264', an=None, map_metadata=-1).run()
 
         # Проверяем, остался ли необработанный фрагмент
@@ -95,6 +94,16 @@ def get_videofiles_list(input_dir):
     random.shuffle(result)
     return result
 
+def get_videofile(input_dir):
+    # если файл возвращаем его же
+    if os.path.isfile(input_dir):
+        print("Файл существует.")
+        return input_dir
+    files = get_videofiles_list(input_dir)
+    if len(files) == 0:
+        print("Empty video files list")
+        exit()
+    return files[0]
 
 # Удалить метаданные. Если входной и выходной файл совподают тогда произойдет замена
 def remove_metadata(input_file, output_file):

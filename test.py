@@ -12,12 +12,13 @@ news_file = "news.txt"
 data = load_news(news_file)
 
 # Замените URL на свой адрес сервера Flask
-url = 'http://172.17.0.2:5000/video'
+#url = 'http://172.17.0.2:5000/video'
+url = 'http://127.0.0.1:5000/video'
 #url = 'http://81.200.154.127:5000/video'
 
 # Пример данных в формате JSON
 data_to_send = {
-    "sample": "7news_short",
+    "sample": "masa_live_1920_1080",
     "data": data,
     }
 

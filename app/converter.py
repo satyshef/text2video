@@ -4,10 +4,10 @@ import lib.ff as ff
 import lib.helper as helper
 
 
-video_dir_path = '/home/boba/python/text2video/tmp/base'
-result_dir_path = '/home/boba/python/text2video/source/pieces_bumaga'
+video_dir_path = '/Users/outsider/Source/python/text2video/source/video'
+result_dir_path = '/Users/outsider/Source/python/text2video/source/1920_1080'
 prefix = 'ff'
-piece_duration = 5
+piece_duration = 9
 
 def is_my_file(path):
     name = helper.get_file_name(path)
@@ -26,7 +26,8 @@ for file_path in video_files:
     
     result_filename = helper.generate_filename(file_path)
     result_file_path = result_dir_path + "/" + result_filename
-    ff.cut_video(file_path, result_dir_path, prefix, duration=piece_duration)
+    vf = 'scale=1920:1080,format=yuv420p'
+    ff.cut_video(file_path, result_dir_path, prefix, duration=piece_duration, vf = vf)
     #ff.change_resolution(file_path, result_file_path)
     #ff.cut_video(result_file_path, result_dir_path, prefix, duration=piece_duration)
     
