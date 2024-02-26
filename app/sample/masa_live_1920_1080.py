@@ -10,7 +10,7 @@ def get_config():
         #"base_file": "./source/1920_1080/ff_1708969273_160425.mp4",
         #"audio_file": "./source/music/collection1/funkyelement.mp3",
         "audio_file": '',
-        "output_dir": "./out/",
+        "output_dir": "./out/masa_live_1920_1080/",
         #"clip_duration": 7,
         "logo_text": '\ МАСА Лайв         |',
         "logo_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
@@ -81,6 +81,8 @@ def run(news):
     
     file_name = News.generate_filename(news['sample'], 'mp4')
     output_file = conf['output_dir'] + file_name
+    # создаем директории если они не существуют
+    News.ensure_directories_exist(output_file)
     news_list = news['data']
     if len(news_list) == 0:
         return None, "Empty news list"

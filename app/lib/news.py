@@ -124,3 +124,20 @@ def get_random_file_or_directory(path):
         return os.path.join(path, random_file)
     else:
         return None  # Если путь не указывает на существующий файл или директорию, возвращаем None
+
+# создаем директории если они не существуют
+def ensure_directories_exist(path):
+    # Отсекаем имя файла, если путь указывает на файл
+    #if os.path.isfile(path):
+    path = os.path.dirname(path)
+    
+    # Разбиваем путь на компоненты
+    directories = path.split('/')
+    
+    # Проверяем каждый компонент
+    current_path = ''
+    for directory in directories:
+        current_path = os.path.join(current_path, directory)
+        if not os.path.exists(current_path):
+            # Если директории не существует, создаем ее
+            os.makedirs(current_path)
