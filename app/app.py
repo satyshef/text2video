@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, send_file
 host = '0.0.0.0'
 #host = '172.17.0.2'
 port = '5000'
-media_directory = 'out/'
+media_directory = './out/'
 app = Flask(__name__)
 
 @app.route('/')
@@ -29,7 +29,9 @@ def create_video():
         # Возвращаем ответ в формате JSON
         if e == None:
             # генерируем url для видеофайла
-            video_url =request.base_url + "/" + os.path.basename(file_path)
+            #video_url =request.base_url + "/" + os.path.basename(file_path)
+            # Может работать не корректно если формат записи media_directory отличается от записи в sample(./out/ out/)
+            video_url =request.base_url + "/" + file_path.replace(media_directory, '')
             return jsonify({"success": True, "message": "Video created", "url":video_url})
         else:
             return jsonify({"success": False, "error": e})    
@@ -38,11 +40,12 @@ def create_video():
         return jsonify({"success": False, "error": str(e)})
 
 
-@app.route('/video/<file_id>', methods=['GET'])
-def get_video(file_id):
+@app.route('/video/<path:video_path>', methods=['GET'])
+def get_video(video_path):
+    
     try:
         # Формируем путь к медиафайлу на основе file_id
-        media_file_path = f'{media_directory}{file_id}'
+        media_file_path = f'{media_directory}{video_path}'
 
         # Возвращаем медиафайл в ответе
         return send_file(media_file_path, as_attachment=True)
