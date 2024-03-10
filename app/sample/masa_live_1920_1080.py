@@ -6,7 +6,7 @@ DEFAULT_NEWS_DURATION = 6
 
 def get_config():
     conf = {
-        "base_file": "./source/1920_1080",
+        "base_file": "./source/1920_1080/masa_summary.mp4",
         #"base_file": "./source/1920_1080/ff_1708969273_160425.mp4",
         #"audio_file": "./source/music/collection1/funkyelement.mp3",
         "audio_file": '',
@@ -14,8 +14,9 @@ def get_config():
         #"clip_duration": 7,
         "logo_text": '\ МАСА Лайв         |',
         "logo_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
-        "basic_font": "./fonts/azoft-sans/Azoft Sans.otf",
-        "max_str_length": 70,
+        "basic_font": "./fonts/Geist-Black.otf",
+        "basic_font_size": 50,
+        "max_str_length": 50,
         "max_text_length": 800,
         "blur_strength": 0,
     }
@@ -32,7 +33,8 @@ def get_drawtext_logo(start, duration, text, font):
     #boxcolor = '#0080FF@0.9'
     boxcolor = '#CC0000@0.9'
     pos_x = '(w-text_w)+10'
-    pos_y = '(h-text_h)-50'
+    #pos_y = '(h-text_h)-50'
+    pos_y = '80'
     enable = f"between(t,{start},{end})"
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
@@ -42,41 +44,43 @@ def get_drawtext_logo(start, duration, text, font):
 def get_drawtext_time(start, duration, text, font):
     text = ff.prepare_text(text)
     end = start + duration
-    fontsize = 25
-    fontcolor = 'white@0.9'
+    fontsize = 45
+    fontcolor = 'black@0.9'
+    boxcolor = 'white@0.8'
     #font = './fonts/Geist-SemiBold.otf'
-    pos_x = 70
-    pos_y = '(h-text_h)-50'
+    pos_x = '(w-text_w)/2'
+    pos_y = '150'
     enable = f"between(t,{start},{end})"
-    drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
+    #drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
+    drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
 
-def get_drawtext_news(start, duration, text, font):
+def get_drawtext_news(start, duration, text, font, fontsize = 30):
     text = str(text)
     if str(text) == "":
         return ""
     text = ff.prepare_text(text)
     end = start + duration
     #font = '' 
-    fontsize = 30
     fontcolor = 'white'
     #boxcolor = '#404040@0.9'
-    boxcolor = '004C99'
+    #boxcolor = '004C99'
     #boxcolor = '#0080FF@0.9'
+    boxcolor = 'black@0.8'
     pos_x = '(w-text_w)/2'
-    pos_y = '((h-text_h)/2)-50'
+    pos_y = '((h-text_h)/2)+50'
     enable = f"between(t,{start},{end})"
     delta = 2
     #alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-{start})/2,if(lt(t,2),1,if(lt(t,{start}0),(0-(t-2))/0,0))))'"
     alpha = f"'if(lt(t,{start}),0,if(lt(t,0),(t-0)/0,if(lt(t,({end}-{delta})),1,if(lt(t,{end}),(2-(t-({end}-{delta})))/2,0))))'"
-    drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x=(w-text_w)/2:y=((h-text_h)/2)-20:enable='{enable}':alpha={alpha}"
+    drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}:enable='{enable}':alpha={alpha}"
     #drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}"
     return drawtext
 
 
 def run(news):
     conf = get_config()
-    news_time = News.get_news_time()
+    news_time = News.get_news_time(None, False)
     input_file = ff.get_videofile(conf["base_file"])
     
     file_name = News.generate_filename(news['sample'], 'mp4')
@@ -108,7 +112,7 @@ def run(news):
         clip_duration = ff.get_video_duration(input_file)
 
     # получаем элемент drawtext
-    dt_news = get_drawtext_news(0, clip_duration, drawtext, conf['basic_font'])
+    dt_news = get_drawtext_news(0, clip_duration, drawtext, conf['basic_font'], conf['basic_font_size'])
     if dt_news == "":
             return '', 'Empty draw text'
     

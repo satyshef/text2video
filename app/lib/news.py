@@ -26,24 +26,27 @@ def get_current_time(timezone):
     current_datetime = utc_now + target_offset
     return current_datetime
 
-def get_news_time(format=None):
+def get_news_time(format=None, round=True):
     # Примените разницу к текущей дате и времени
     current_datetime = get_current_time(TIMEZONE)
     # Вычислить разницу в минутах до следующего часа
     minutes_to_next_hour = 60 - current_datetime.minute
 
-    # Если текущее время не в конце часа, округлить вверх
-    if minutes_to_next_hour < 60:
-        rounded_datetime = current_datetime + timedelta(minutes=minutes_to_next_hour)
-        rounded_datetime = rounded_datetime.replace(second=0, microsecond=0)
+    if round:
+        # Если текущее время не в конце часа, округлить вверх
+        if minutes_to_next_hour < 60:
+            result_datetime = current_datetime + timedelta(minutes=minutes_to_next_hour)
+            result_datetime = result_datetime.replace(second=0, microsecond=0)
+        else:
+            # Если уже конец часа, просто обнулить минуты
+            result_datetime = current_datetime.replace(minute=0, second=0, microsecond=0)
     else:
-        # Если уже конец часа, просто обнулить минуты
-        rounded_datetime = current_datetime.replace(minute=0, second=0, microsecond=0)
+        result_datetime = current_datetime
 
     if format == 'usa':
-        return rounded_datetime.strftime("%m/%d/%y %I:%M %p")
+        return result_datetime.strftime("%m/%d/%y %I:%M %p")
     else:
-        return rounded_datetime.strftime("%d.%m.%y %H:%M")
+        return result_datetime.strftime("%d.%m.%y %H:%M")
 
 # Нарезаем строку на подстроки. max_string - максимальная длинна входной строки
 def split_text(text, max_length=25, max_string=400):
