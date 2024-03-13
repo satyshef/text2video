@@ -4,10 +4,10 @@ import lib.ff as ff
 import lib.helper as helper
 
 
-video_dir_path = '/Users/outsider/Source/python/text2video/source/video'
+video_dir_path = '/Users/outsider/Source/python/text2video/source/video3'
 result_dir_path = '/Users/outsider/Source/python/text2video/source/1920_1080'
 prefix = 'ff'
-piece_duration = 9
+piece_duration = 11
 
 def is_my_file(path):
     name = helper.get_file_name(path)
