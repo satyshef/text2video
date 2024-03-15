@@ -1,16 +1,19 @@
 # МАСА Лайв с автогенерацией базы из 5с нарезок
 import lib.news as News
 import lib.ff as ff
+import lib.images as images
+import random
 
 DEFAULT_NEWS_DURATION = 6
 
 def get_config():
     conf = {
-        "base_file": "./source/1920_1080/masa_summary.mp4",
+        "base_file": "./source/masa_summary/masa_summary.mp4",
         #"base_file": "./source/1920_1080/ff_1708969273_160425.mp4",
         #"audio_file": "./source/music/collection1/funkyelement.mp3",
         "audio_file": '',
         "output_dir": "./out/masa_live_1920_1080/",
+        "cover_file": "./source/images/masa_chronicle.png",
         #"clip_duration": 7,
         "logo_text": '\ МАСА Лайв         |',
         "logo_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
@@ -77,6 +80,14 @@ def get_drawtext_news(start, duration, text, font, fontsize = 30):
     #drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=40:x={pos_x}:y={pos_y}"
     return drawtext
 
+def create_cover(news, conf):
+    file_name = News.generate_filename(news['sample'], 'png')
+    input_path = conf["cover_file"]
+    output_path = conf['output_dir'] + file_name
+    random_news = random.choice(news['data'])
+    text = News.split_text(random_news, conf['max_str_length'], conf['max_text_length'])
+    return images.place_text_center(input_path, output_path, text, font_path=conf["basic_font"], font_size=30)
+
 
 def run(news):
     conf = get_config()
@@ -85,11 +96,15 @@ def run(news):
     
     file_name = News.generate_filename(news['sample'], 'mp4')
     output_file = conf['output_dir'] + file_name
-    # создаем директории если они не существуют
-    News.ensure_directories_exist(output_file)
     news_list = news['data']
     if len(news_list) == 0:
         return None, "Empty news list"
+    # создаем директории если они не существуют
+    News.ensure_directories_exist(output_file)
+    # Создаем обложку
+    if create_cover(news, conf) != True:
+        return None, "Cover not created"
+    
     draws = []
     drawtext = ''
     #drawtext = '- ' + news_list[0]

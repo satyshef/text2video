@@ -23,7 +23,6 @@ def place_text_center(image_path, output_path, text, font_path=None, font_size=4
     # Загрузка изображения
     image = Image.open(image_path)
     draw = ImageDraw.Draw(image)
-
     # Задание шрифта
     if font_path:
         font = ImageFont.truetype(font_path, font_size)
