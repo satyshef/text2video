@@ -1,8 +1,11 @@
 # МАСА Лайв с автогенерацией базы из 5с нарезок
+import random
+import re
+
 import lib.news as News
 import lib.ff as ff
 import lib.images as images
-import random
+
 
 DEFAULT_NEWS_DURATION = 6
 
@@ -15,7 +18,7 @@ def get_config():
         "output_dir": "./out/masa_live_1920_1080/",
         "cover_file": "./source/images/masa_chronicle.png",
         #"clip_duration": 7,
-        "logo_text": '\ МАСА Лайв         |',
+        "logo_text": '\ МАСА ХРОНИКА         |',
         "logo_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
         "basic_font": "./fonts/Geist-Black.otf",
         "basic_font_size": 50,
@@ -81,12 +84,22 @@ def get_drawtext_news(start, duration, text, font, fontsize = 30):
     return drawtext
 
 def create_cover(news, conf):
+    if len(news['data']) == 0:
+        return False, "Empty news list"
+    
+    max_line_length = 25
+    max_string_length = 120
     file_name = News.generate_filename(news['sample'], 'png')
     input_path = conf["cover_file"]
     output_path = conf['output_dir'] + file_name
     random_news = random.choice(news['data'])
-    text = News.split_text(random_news, conf['max_str_length'], conf['max_text_length'])
-    return images.place_text_center(input_path, output_path, text, font_path=conf["basic_font"], font_size=30)
+    # Отделить заглавие от основной части . ; \n
+    substring = re.split(r'[.;\n]', random_news)
+    text = News.split_text(substring[0], max_line_length, max_string_length)
+    if text == '':
+        return False, "Long text"
+    #return images.place_text_center(input_path, output_path, text, font_path=conf["basic_font"], font_size=50)
+    return images.place_text(input_path=input_path, output_path=output_path, text=text, x_pos=0, y_pos=0, font_path=conf["basic_font"], font_size=70), "Place text result"
 
 
 def run(news):
@@ -102,13 +115,13 @@ def run(news):
     # создаем директории если они не существуют
     News.ensure_directories_exist(output_file)
     # Создаем обложку
-    if create_cover(news, conf) != True:
-        return None, "Cover not created"
-    
+    cc_result, cc_text = create_cover(news, conf)
+    if cc_result == False:
+        return None, cc_text
+
+    #return None, "Empty news list"
     draws = []
     drawtext = ''
-    #drawtext = '- ' + news_list[0]
-    #drawtext = "Главное на данный момент:"
 
     # Собираем текст
     for line in news_list:

@@ -53,7 +53,7 @@ def split_text(text, max_length=25, max_string=400):
     
     text = text.strip()
     if len(text) > max_string:
-        return ""
+        return ''
 
     text = text.replace("\n", r" ")
     # Разбиваем текст на слова

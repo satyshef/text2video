@@ -97,7 +97,7 @@ def get_videofiles_list(input_dir):
 def get_videofile(input_dir):
     # если файл возвращаем его же
     if os.path.isfile(input_dir):
-        print("Файл существует.")
+        #print("Файл существует.")
         return input_dir
     files = get_videofiles_list(input_dir)
     if len(files) == 0:
