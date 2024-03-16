@@ -116,9 +116,8 @@ def run(news):
     News.ensure_directories_exist(output_file)
     # Создаем обложку
     cc_result, cc_text = create_cover(news, conf)
-    if cc_result == False:
-        return None, cc_text
-
+    #if cc_result == False:
+    #    return None, cc_text
     #return None, "Empty news list"
     draws = []
     drawtext = ''
