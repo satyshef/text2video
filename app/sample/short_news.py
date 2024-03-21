@@ -6,14 +6,15 @@ DEFAULT_NEWS_DURATION = 6
 
 def get_config():
     conf = {
-        "base_file": "./source/base_masa_short/masa_main_3.mp4",
+        "base_file": "./source/pieces_masa_live/",
         #"audio_file": "./source/music/collection1/funkyelement.mp3",
-        "audio_file": '',
+        "audio_file": './source/sound/clock5sec/',
         "output_dir": "./out/",
         #"clip_duration": 7,
         "logo_text": '\ 7news          |',
         "logo_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
         "basic_font": "./fonts/inglobal/inglobal.ttf",
+        "basic_font_size": 25,
         "max_str_length": 46,
         "max_text_length": 1300,
         "blur_strength": 0,
@@ -50,20 +51,20 @@ def get_drawtext_time(start, duration, text, font):
     drawtext=f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:x={pos_x}:y={pos_y}:enable='{enable}'"
     return drawtext
 
-def get_drawtext_news(start, duration, text, font):
+def get_drawtext_news(start, duration, text, font, fontsize = 30):
     text = str(text)
     if str(text) == "":
         return ""
     text = ff.prepare_text(text)
     end = start + duration
     #font = '' 
-    fontsize = 38
+    #fontsize = 38
     fontcolor = 'white'
     #boxcolor = '#404040@0.9'
     boxcolor = '1C3866@0.9'
     #boxcolor = '#0080FF@0.9'
     pos_x = '(w-text_w)/2'
-    pos_y = '((h-text_h)/2)-80'
+    pos_y = '((h-text_h)/2)'
     enable = f"between(t,{start},{end})"
     #alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-{start})/2,if(lt(t,2),1,if(lt(t,{start}0),(0-(t-2))/0,0))))'"
     #drawtext = f"text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x=(w-text_w)/2:y=((h-text_h)/2)-20:enable='{enable}':alpha={alpha}"
@@ -74,7 +75,16 @@ def get_drawtext_news(start, duration, text, font):
 def run(news):
     conf = get_config()
     news_time = News.get_news_time()
-    input_file = conf["base_file"]
+    input_file = ff.get_videofile(conf["base_file"])
+    if input_file == None:
+        return None, "Empty input video file"
+    
+
+    audio_file = ff.get_audiofile(conf["audio_file"])
+    if audio_file == None:
+        return None, "Empty input audio file"
+    
+    
     file_name = News.generate_filename(news['sample'], 'mp4')
     output_file = conf['output_dir'] + file_name
     news_list = news['data']
@@ -100,10 +110,10 @@ def run(news):
     if "clip_duration" in conf:
         clip_duration = conf["clip_duration"]
     else:
-        clip_duration = ff.get_video_duration(conf["base_file"])
+        clip_duration = ff.get_video_duration(input_file)
         
         # получаем элемент drawtext
-    dt_news = get_drawtext_news(0, clip_duration, drawtext, conf['basic_font'])
+    dt_news = get_drawtext_news(0, clip_duration, drawtext, conf['basic_font'], conf['basic_font_size'])
     if dt_news == "":
             return '', 'Empty draw text'
     
@@ -123,4 +133,5 @@ def run(news):
     ff.add_effect(input_file, output_file, vf, clip_duration)
     #ffmpeg.input(input_file).output(output_file, vf=params, t=duration).run()
 
+    ff.overlay_audio(output_file, audio_file, output_file)
     return output_file, None

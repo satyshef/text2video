@@ -8,7 +8,8 @@ def load_news(file_path):
         lines = [line.strip() for line in file.readlines()]
     return lines
 
-news_file = "news.txt"
+#news_file = "news.txt"
+news_file = "/Users/outsider/Source/Docker/airflow/data/news/masa_live_short/masa_live_short.240321154622.txt"
 data = load_news(news_file)
 
 # Замените URL на свой адрес сервера Flask
@@ -18,7 +19,7 @@ url = 'http://127.0.0.1:5000/video'
 
 # Пример данных в формате JSON
 data_to_send = {
-    "sample": "masa_live_1920_1080",
+    "sample": "short_news",
     "data": data,
     }
 

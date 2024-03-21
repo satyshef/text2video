@@ -101,8 +101,28 @@ def get_videofile(input_dir):
         return input_dir
     files = get_videofiles_list(input_dir)
     if len(files) == 0:
-        print("Empty video files list")
-        exit()
+        return None
+    return files[0]
+
+
+# Получаем список видеофайлов в заданной директории
+def get_audiofiles_list(input_dir):
+    video_files = [f for f in os.listdir(input_dir) if f.endswith(('.mp3'))]
+    result = []
+    for video_file in video_files:
+        result.append(os.path.join(input_dir, video_file))
+
+    random.shuffle(result)
+    return result
+
+def get_audiofile(input_dir):
+    # если файл возвращаем его же
+    if os.path.isfile(input_dir):
+        #print("Файл существует.")
+        return input_dir
+    files = get_audiofiles_list(input_dir)
+    if len(files) == 0:
+        return None
     return files[0]
 
 # Удалить метаданные. Если входной и выходной файл совподают тогда произойдет замена
