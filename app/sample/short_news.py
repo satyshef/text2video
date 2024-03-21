@@ -6,9 +6,9 @@ DEFAULT_NEWS_DURATION = 6
 
 def get_config():
     conf = {
-        "base_file": "./source/pieces_masa_live/",
+        "base_file": "./source/video_720_1280_6sec/",
         #"audio_file": "./source/music/collection1/funkyelement.mp3",
-        "audio_file": './source/sound/clock5sec/',
+        "audio_file": './source/sound/6sec/',
         "output_dir": "./out/",
         #"clip_duration": 7,
         "logo_text": '\ 7news          |',
