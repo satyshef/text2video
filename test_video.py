@@ -24,7 +24,7 @@ conf = {
     "max_text_length": 1300,
     "blur_strength": 0,
     "box_color": "#313131@0.8",
-    "box_border": 140
+    "box_border": 200
 }
 
 # Замените URL на свой адрес сервера Flask
