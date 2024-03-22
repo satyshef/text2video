@@ -17,7 +17,7 @@ conf = {
     "output_dir": "./out/",
     "logo_text": '\ 7news          |',
     "logo_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
-    "basic_font_color": 'red',
+    "basic_font_color": 'white',
     "basic_font": "./fonts/inglobal/inglobal.ttf",
     "basic_font_size": 25,
     "max_str_length": 46,
