@@ -4,6 +4,7 @@ import lib.ff as ff
 
 DEFAULT_NEWS_DURATION = 6
 
+# default config
 def get_config():
     conf = {
         "base_file": "./source/pieces_masa_live/",
@@ -20,12 +21,12 @@ def get_config():
         "max_text_length": 1300,
         "blur_strength": 0,
         "box_color": "#313131@0.8",
-        "box_border": 140
+        "box_border": '40'
     }
 
     return conf
 
-def get_drawtext_news(start, duration, text, font, fontcolor = 'white', fontsize = 30, boxcolor = '', boxborderw = 40):
+def get_drawtext_news(start, duration, text, font, fontcolor = 'white', fontsize = 30, boxcolor = '', boxborder = 20):
     text = str(text)
     if str(text) == "":
         return ""
@@ -43,30 +44,34 @@ def get_drawtext_news(start, duration, text, font, fontcolor = 'white', fontsize
     #alpha = f"'if(lt(t,{start}),0,if(lt(t,{end}),(t-{start})/2,if(lt(t,2),1,if(lt(t,{start}0),(0-(t-2))/0,0))))'"
     #drawtext = f"text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw=20:x=(w-text_w)/2:y=((h-text_h)/2)-20:enable='{enable}':alpha={alpha}"
     if boxcolor == '':
-        drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=0:boxcolor={boxcolor}:boxborderw={boxborderw}:x={pos_x}:y={pos_y}"
+        drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=0:boxcolor={boxcolor}:boxborderw={boxborder}:x={pos_x}:y={pos_y}"
     else:
-        drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw={boxborderw}:x={pos_x}:y={pos_y}"
+        drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw={boxborder}:x={pos_x}:y={pos_y}"
     return drawtext
 
 
 def run(news):
-    if 'config' in news:
-        conf = news['config']
-    else:
+    if isinstance(news.get('sample'), str):
         conf = get_config()
-
+        sample_name = news['sample']
+    else:
+        conf = news['sample']
+        sample_name = news['sample']['name']
+       
+    
     news_time = News.get_news_time()
     input_file = ff.get_videofile(conf["base_file"])
     if input_file == None:
         return None, "Empty input video file"
     
+    #return None, conf["base_file"]
 
     audio_file = ff.get_audiofile(conf["audio_file"])
     if audio_file == None:
         return None, "Empty input audio file"
     
     
-    file_name = News.generate_filename(news['sample'], 'mp4')
+    file_name = News.generate_filename(sample_name, 'mp4')
     output_file = conf['output_dir'] + file_name
     news_list = news['data']
     if len(news_list) == 0:

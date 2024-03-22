@@ -1,6 +1,10 @@
 import requests
 import json
 
+config_file = 'config.json'
+with open(config_file, 'r') as f:
+    conf = json.load(f)
+
 def load_news(file_path):
     # Открыть файл для чтения
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -9,9 +13,10 @@ def load_news(file_path):
     return lines
 
 #news_file = "news.txt"
-news_file = "/Users/outsider/Source/Docker/airflow/data/news/masa_live_short/masa_live_short.240321154622.txt"
+#news_file = "/Users/outsider/Source/Docker/airflow/data/news/masa_live_short/masa_live_short.240321154622.txt"
+news_file = "/Users/outsider/Source/Docker/airflow/data/news/masa_live_short/test.txt"
 data = load_news(news_file)
-conf = {
+conffff = {
     "base_file": "./source/pieces_masa_live/",
     "audio_file": './source/sound/clock5sec/',
     "output_dir": "./out/",
@@ -24,7 +29,7 @@ conf = {
     "max_text_length": 1300,
     "blur_strength": 0,
     "box_color": "#313131@0.8",
-    "box_border": 200
+    "box_border": 600
 }
 
 # Замените URL на свой адрес сервера Flask

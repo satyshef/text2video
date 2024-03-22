@@ -20,7 +20,15 @@ def create_video():
     try:
         # Получаем данные JSON из запроса
         news = request.json
-        library_name = 'sample.' + news['sample']
+        if isinstance(news.get('sample'), str):
+            sample_name = news['sample']
+        else:
+            if 'name' not in news['sample']:
+                return jsonify({"success": False, "error": "Sample name in config not set"})     
+            sample_name = news['sample']['name']
+
+        library_name = 'sample.' + sample_name
+
         sample = importlib.import_module(library_name)
         file_path, e = sample.run(news)
         #print("Полученные данные:", data['sample'])
