@@ -11,6 +11,21 @@ def load_news(file_path):
 #news_file = "news.txt"
 news_file = "/Users/outsider/Source/Docker/airflow/data/news/masa_live_short/masa_live_short.240321154622.txt"
 data = load_news(news_file)
+conf = {
+    "base_file": "./source/pieces_masa_live/",
+    "audio_file": './source/sound/clock5sec/',
+    "output_dir": "./out/",
+    "logo_text": '\ 7news          |',
+    "logo_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
+    "basic_font_color": 'red',
+    "basic_font": "./fonts/inglobal/inglobal.ttf",
+    "basic_font_size": 25,
+    "max_str_length": 46,
+    "max_text_length": 1300,
+    "blur_strength": 0,
+    "box_color": "#313131@0.8",
+    "box_border": 140
+}
 
 # Замените URL на свой адрес сервера Flask
 #url = 'http://172.17.0.2:5000/video'
@@ -21,6 +36,7 @@ url = 'http://127.0.0.1:5000/video'
 data_to_send = {
     "sample": "short_news",
     "data": data,
+    "config": conf
     }
 
 # Отправляем POST-запрос с данными JSON
