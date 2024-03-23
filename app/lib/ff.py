@@ -125,6 +125,12 @@ def get_audiofile(input_dir):
         return None
     return files[0]
 
+# Определение общей длительности видео
+def get_duration(file_path):
+    # Получаем общую информацию о видео
+    probe = ffmpeg.probe(file_path)
+    return float(probe['format']['duration'])
+
 # Удалить метаданные. Если входной и выходной файл совподают тогда произойдет замена
 def remove_metadata(input_file, output_file):
     # Если заменяем файл
@@ -146,7 +152,7 @@ def remove_metadata(input_file, output_file):
 
 
 def add_effect(input_file, output_file, vf, duration):
-    # Если заменяем файл
+    # Если input_file == output_file заменяем файл
     if input_file == output_file:
         #output_file_path = "tmp.mp4"
         output_file_path = get_temp_filename(output_file)
@@ -163,6 +169,32 @@ def add_effect(input_file, output_file, vf, duration):
 
     except ffmpeg.Error as e:
         print(f"Произошла ошибка при обработке файла: {e.stderr}")
+
+
+def add_image(input_file, output_file, image_file, size=240, pos_x=200, pos_y=200):
+    # Если input_file == output_file заменяем файл
+    if input_file == output_file:
+        output_file_path = get_temp_filename(output_file)
+    else:
+        output_file_path = output_file
+    try:
+
+        duration = get_duration(input_file)
+        # Открытие видео и GIF файлов
+        input_stream = ffmpeg.input(input_file)
+        input_image = ffmpeg.input(image_file, stream_loop=-1)
+        # Масштабирование до ширины size пикселей, сохраняя пропорции
+        input_image = input_image.filter('scale', size, -1)
+        # Наложение GIF на видео с координатами
+        overlayed_video = input_stream.overlay(input_image, x=pos_x, y=pos_y)
+        # Запись результата
+        ffmpeg.output(overlayed_video, output_file_path, t=duration).run()
+        if input_file == output_file:
+            os.rename(output_file_path, output_file)
+        print(f"Изображение успешно  наложено {output_file}")
+    
+    except ffmpeg.Error as e:
+        print(f"Произошла ошибка при наложении изображения: {e.stderr}")
 
 
 def overlay_audio(input_video, input_audio, output_file):

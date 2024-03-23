@@ -1,8 +1,6 @@
 # МАСА Лайв генерация loop видео с новостями на одном экране
 import lib.news as News
 import lib.ff as ff
-import lib.helper as helper
-
 
 DEFAULT_NEWS_DURATION = 6
 
@@ -14,7 +12,7 @@ def get_config():
         "audio_file": './source/sound/clock5sec/',
         "output_dir": "./out/",
         #"clip_duration": 7,
-        "logo_text": '\ Short news          |',
+        "logo_text": '\ 7news          |',
         "logo_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
         "basic_font_color": 'white',
         "basic_font": "./fonts/inglobal/inglobal.ttf",
@@ -50,7 +48,6 @@ def get_drawtext_news(start, duration, text, font, fontcolor = 'white', fontsize
     else:
         drawtext = f"fontfile={font}:text='{text}':fontsize={fontsize}:fontcolor={fontcolor}:box=1:boxcolor={boxcolor}:boxborderw={boxborder}:x={pos_x}:y={pos_y}"
     return drawtext
-
 
 
 def run(news):
@@ -101,10 +98,8 @@ def run(news):
     else:
         clip_duration = ff.get_video_duration(input_file)
         
-    box_color = helper.get_random_parametr(conf['box_color'])
-    
     # получаем элемент drawtext
-    dt_news = get_drawtext_news(0, clip_duration, drawtext, conf['basic_font'], conf['basic_font_color'], conf['basic_font_size'], box_color, conf['box_border'])
+    dt_news = get_drawtext_news(0, clip_duration, drawtext, conf['basic_font'], conf['basic_font_color'], conf['basic_font_size'], conf['box_color'], conf['box_border'])
     if dt_news == "":
             return '', 'Empty draw text'
     
@@ -116,17 +111,5 @@ def run(news):
         vf = vf + 'drawtext=' + d + ','
     vf = vf.rstrip(',')
     ff.add_effect(input_file, output_file, vf, clip_duration)
-
-    # Накладываем картинку
-    if "image" in conf and "file" in conf["image"]:
-        image = conf["image"]
-        file = image["file"]
-        size = helper.get_random_parametr(image["size"])
-        pos_x = helper.get_random_parametr(image["pos_x"])
-        pos_y = helper.get_random_parametr(image["pos_y"])
-        if size != None and pos_x != None and pos_y != None:
-            ff.add_image(output_file, output_file, file, size, pos_x, pos_y)
-            
-    #ff.add_image(output_file, output_file, conf["image_file"], size=260, pos_x=180, pos_y=500)
     ff.overlay_audio(output_file, audio_file, output_file)
     return output_file, None

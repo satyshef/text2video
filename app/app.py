@@ -18,8 +18,12 @@ def ok():
 @app.route('/video', methods=['POST'])
 def create_video():
     try:
+        
         # Получаем данные JSON из запроса
         news = request.json
+        if 'data' not in news or 'sample' not in news:
+                return jsonify({"success": False, "error": "Empty parametrs"})
+        
         if isinstance(news.get('sample'), str):
             sample_name = news['sample']
         else:
@@ -27,6 +31,7 @@ def create_video():
                 return jsonify({"success": False, "error": "Sample name in config not set"})     
             sample_name = news['sample']['name']
 
+       
         library_name = 'sample.' + sample_name
 
         sample = importlib.import_module(library_name)

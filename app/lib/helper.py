@@ -1,5 +1,6 @@
 import os
 import time
+import random
 
 def test():
     print("Helper test")
@@ -43,3 +44,24 @@ def delete_file(file_path):
         print("Файл удален успешно.")
     except OSError as e:
         print(f"Ошибка при удалении файла: {e}")
+
+
+# Поучить случайный параметр из диапазона
+def get_random_parametr(param):
+    if param == "" or param == None:
+        return None
+    
+    if isinstance(param, list):
+        random.shuffle(param)
+        return param[0]
+    
+    if isinstance(param, int) == True:
+        return param
+    
+    p = param.split("-")
+    if len(p) == 1:
+        return param
+    
+    if p[0].isdigit() != True or p[1].isdigit() != True:
+        return None
+    return random.randint(int(p[0]), int(p[1]))

@@ -1,0 +1,24 @@
+{
+    "sample":{
+        "name": "short_news",
+        "base_file": "./source/video_720_1280_6sec/",
+        "audio_file": "./source/sound/clock5sec/",
+        "output_dir": "./out/",
+        "logo_text": "\\ 7news          |",
+        "logo_font": "./fonts/azoft-sans/Azoft Sans-Bold.otf",
+        "basic_font_color": "white",
+        "basic_font": "./fonts/inglobal/inglobal.ttf",
+        "basic_font_size": 25,
+        "max_str_length": 46,
+        "max_text_length": 1300,
+        "blur_strength": 0,
+        "box_color": ["1C3866@0.9"],
+        "box_border": 600,
+        "image":{
+            "file": "./source/images/gif/masalive.gif",
+            "size": "200-220",
+            "pos_x": "80-400",
+            "pos_y": "1190-1210"
+        }
+    }
+}
